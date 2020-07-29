@@ -4,7 +4,9 @@
 #include<time.h> 
 #include "shift.h"
 #include "conditions.h"
-void generateAOne(int size,int board[][size])
+
+/*Generate a 1 for every move*/
+void generateAOne(int size,int board[][size]) 
 {
     if(atLeastOneZero(size,board)==0)
         return;
@@ -22,15 +24,15 @@ void generateAOne(int size,int board[][size])
         }
     }
 }
-
+/*Player chooses to move up*/
 void moveUp(int size,int board[][size])
 {
     int row,column,times,eachRow;
     int validMove=0;
-    shiftUp(size,board);
-    for(column=0;column<size;column++)
+    shiftUp(size,board);                            /* Fills the gaps of 0's upwards */
+    for(column=0;column<size;column++)              /*For each column to move up*/
     {
-        for(eachRow=0;eachRow<size-1;eachRow++)
+        for(eachRow=0;eachRow<size-1;eachRow++)     /* Checks each row if they are adjecent or not if yes they are added only once per row else checks next*/
         {
             if(board[eachRow][column]!=0 && board[eachRow+1][column]!=0)
             {
@@ -45,18 +47,19 @@ void moveUp(int size,int board[][size])
             }    
         }
     }
-    shiftUp(size,board);
+    shiftUp(size,board); /* Fills the gaps of 0's upwards */
     generateAOne(size,board);
 }
 
+/*Player chooses to move down*/
 void moveDown(int size,int board[][size])
 {
     int row,column,eachRow;
-    shiftDown(size,board);
-    for(column=0;column<size;column++)
+    shiftDown(size,board);                           /* Fills the gaps of 0's downwards */
+    for(column=0;column<size;column++)              /*For each column to move down*/
     {
 
-        for(eachRow=size-1;eachRow>=1;eachRow--)
+        for(eachRow=size-1;eachRow>=1;eachRow--)    /* Checks each row if they are adjecent or not if yes they are added only once per row else checks next*/
         {
             if(board[eachRow][column]!=0 && board[eachRow-1][column]!=0)
             {
@@ -71,17 +74,18 @@ void moveDown(int size,int board[][size])
             }
         }
     }
-    shiftDown(size,board);
+    shiftDown(size,board); /* Fills the gaps of 0's downwards */
     generateAOne(size,board);
 }
 
+/*Player chooses to move left*/
 void moveLeft(int size,int board[][size])
 {
     int row,column,eachCol;
-    shiftLeft(size,board);
-    for(row=0;row<size;row++)
+    shiftLeft(size,board);                           /* Fills the gaps of 0's leftside */
+    for(row=0;row<size;row++)                        /*For each row to move left*/
     {
-        for(eachCol=0;eachCol<size-1;eachCol++)
+        for(eachCol=0;eachCol<size-1;eachCol++)      /* Checks each column if they are adjecent or not if yes they are added only once per column else checks next*/
         {
             if(board[row][eachCol]!=0 && board[row][eachCol+1]!=0)
             {
@@ -96,17 +100,18 @@ void moveLeft(int size,int board[][size])
             }
         }
     }
-    shiftLeft(size,board);
+    shiftLeft(size,board);     /* Fills the gaps of 0's leftside */
     generateAOne(size,board);
 }
 
+/*Player chooses to move right*/
 void moveRight(int size,int board[][size])
 {
     int row,column,eachCol;
-    shiftRight(size,board);
-    for(row=0;row<size;row++)
+    shiftRight(size,board);                             /* Fills the gaps of 0's rightside */
+    for(row=0;row<size;row++)                           /*For each row to move right*/
     {
-        for(eachCol=size-1;eachCol>=1;eachCol--)
+        for(eachCol=size-1;eachCol>=1;eachCol--)       /* Checks each column if they are adjecent or not if yes they are added only once per column else checks next*/
         {
             if(board[row][eachCol]!=0 && board[row][eachCol-1]!=0)
             {
@@ -121,6 +126,6 @@ void moveRight(int size,int board[][size])
             }       
         }
     }
-    shiftRight(size,board);
+    shiftRight(size,board);       /* Fills the gaps of 0's rightside */
     generateAOne(size,board);
 }

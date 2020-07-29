@@ -2,7 +2,9 @@
 #include<stdlib.h>
 #include "structure.h"
 #include <string.h>
-void copyBoard(int size,int board[][size],int board1[][size])
+
+/*Copy the board */
+void copyBoard(int size,int board[][size],int board1[][size]) 
 {
     int i,j;
     for(i=0;i<size;i++)
@@ -14,7 +16,8 @@ void copyBoard(int size,int board[][size],int board1[][size])
     }
 }
 
-void copyToPointer(player *p1,player *p)
+/*Copy player details from p1 to p*/
+void copy(player *p1,player *p)
 {
     strcpy(p->date,p1->date);
     strcpy(p->name,p1->name);
@@ -23,7 +26,7 @@ void copyToPointer(player *p1,player *p)
     p->noOfMoves=p1->noOfMoves;
 }
 
-void copyToStructure(player *p1,player *p)
+/*void copyToStructure(player *p1,player *p)
 {
     strcpy(p1->date,p->date);
     strcpy(p1->name,p->name);
@@ -31,8 +34,10 @@ void copyToStructure(player *p1,player *p)
     p1->size=p->size;
     p1->noOfMoves=p->noOfMoves;
 
-}
+}*/
 
+
+/* Save player state to file, to save game */
 void saveState(player *p)
 {
     FILE *outfile; 
@@ -43,13 +48,14 @@ void saveState(player *p)
         exit (1); 
     }  
     player p1;
-    copyToStructure(&p1,p);
+   // copyToStructure(&p1,p);
+    copy(p,&p1);
     fwrite (&p1, sizeof(player), 1, outfile);
     fclose(outfile);
     outfile=NULL;
 }
 
-
+/*get saved game to resume game*/
 void getState(player *p)
 {
     FILE *infile;
@@ -61,7 +67,7 @@ void getState(player *p)
     }
     player p1; 
     fread(&p1, sizeof(player), 1, infile);
-    copyToPointer(&p1,p);
+    copy(&p1,p);
     fclose (infile);
     infile=NULL; 
 }

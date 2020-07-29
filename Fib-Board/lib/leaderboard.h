@@ -7,10 +7,10 @@ void swap(player *p1,player *p2)
     *p1=*p2;
     *p2=*temp;
 }
-
-void sortLeaderBoard(int n,player players[n])
+/*Sorts leaderboard based on their moves*/
+void sortLeaderBoard(int n,player *players) 
 {
-   int i, j;  
+    int i, j;  
     for (i = 0; i < n-1; i++)      
     { 
         for (j = 0; j < n-i-1; j++)  
@@ -21,7 +21,8 @@ void sortLeaderBoard(int n,player players[n])
     } 
 }
 
-int getLeaderBoard(player players[])
+/* returns leaderboard */
+void getLeaderBoard(player players[])
 {
     FILE *infile;
     infile = fopen ("../data/LeaderBoard.dat", "r"); 
@@ -36,67 +37,95 @@ int getLeaderBoard(player players[])
        //printf("\nname:%s",players[index].name);
         index++;
     } 
+}
+/* returns number of entries in leaderboard file already there */
+int getCountOfLeaderBoard()
+{
+    player players;
+    FILE *infile;
+    infile = fopen ("../data/LeaderBoard.dat", "r"); 
+    if (infile == NULL) 
+    { 
+        fprintf(stderr, "\nError opening file\n"); 
+        exit (1); 
+    }
+    int index=0;
+    while(fread(&players, sizeof(player), 1, infile)!=0)
+    {
+       //printf("\nname:%s",players[index].name);
+        index++;
+    } 
     return index;
 }
 
-void writeIntoLeadeBoard(int n,player players[n])
+/*Writes into leaderboard*/
+void writeIntoLeadeBoard(int n,player *players)
 {
-    FILE *outfile; 
-    outfile = fopen ("../data/LeaderBoard.dat", "w");
-    if (outfile == NULL) 
+    FILE *infile;
+    infile = fopen ("../data/LeaderBoard.dat", "w"); 
+    if (infile == NULL) 
     { 
-        fprintf(stderr, "\nError opend file\n"); 
+        fprintf(stderr, "\nError opening file\n"); 
         exit (1); 
-    } 
-    int i=0;
-    for(i=0;i<n-i;i++)
-    { 
-        printf("\nLopp");
-        fwrite (&players[i], sizeof(player), 1, outfile);
     }
-    fclose(outfile);
-    outfile=NULL;
+    for(int i=0;i<n;i++)
+    {
+        if(i>19)
+            return;
+        fwrite (&players[i], sizeof(player), 1, infile);
+    }
+    return;
 }
 
-void updateLeaderBoard(int no,player players[no])
+/*Update the leaderboard*/
+void updateLeaderBoard(int no,player* players)
 {
     sortLeaderBoard(no,players);
     writeIntoLeadeBoard(no,players);
 }
 
+/*Checks if current player is elgible to get intlo leaderboard*/
 void checkLeaderBoard(player *p)
 {
-    int no;
-    player players[21];
-    int index=getLeaderBoard(players);
-    /*printf("\nindex:%d",index);
-    printf("\nmy moves:%d\nleast moves:%d",p->noOfMoves,players[index].noOfMoves);*/
-    if(index>0)
+    int index = getCountOfLeaderBoard();
+    player *players=(player *)calloc(index+1,sizeof(player));
+    getLeaderBoard(players);
+    if(index==0)
     {
-        if((p->noOfMoves) < (players[index]).noOfMoves || ((p->noOfMoves) == (players[index]).noOfMoves) && (index<20))
-        {
-            index++;
-            copyToStructure(&players[index],p);
-            updateLeaderBoard(index+1,players);
-        }
-    }
-    else if(index==0)
-    {
-        copyToStructure(&players[0],p);
         writeIntoLeadeBoard(1,p);
     }
-
+    else
+    {
+        if(index<20)
+        {
+            copy(p,&players[index]);
+            updateLeaderBoard(index+1,players);
+        }
+        else if(index==20)
+        {
+            if(p->noOfMoves < players[19].noOfMoves)
+            {
+                copy(p,&players[20]);
+                updateLeaderBoard(21,players);
+            }
+        }
+        
+    }
+    
+    return;
 }
 
+/*Prints leaderboard*/
 void printLeaderBoard()
 {
     int i;
-    player players[21];
     printf("\nSno\t\tDate\t\t\t\tName\t\t\tSize\t\t\tMoves");
-    int index = getLeaderBoard(players);
+    int index = getCountOfLeaderBoard();
+    player *players=(player *)calloc(index,sizeof(player));
+    getLeaderBoard(players);
     if(index>0)
     {
-        for(i=0;i<=index;i++)
+        for(i=0;i<index;i++)
         {
             printf("\n%d\t%s\t\t%s\t\t\t %d\t\t\t %d",i+1,players[i].date,players[i].name,players[i].size,players[i].noOfMoves);
         }

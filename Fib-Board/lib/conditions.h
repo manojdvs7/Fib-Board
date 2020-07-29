@@ -1,5 +1,6 @@
 #include<stdio.h>
 
+/* Checks if the 2 numbers are adjacent fibonacci numbers so that thay can be added */
 int areAdjacentNumbers(int num1,int num2)
 {
     if(num1==num2 && num1!=1 )
@@ -13,6 +14,7 @@ int areAdjacentNumbers(int num1,int num2)
     return 0;
 }
 
+/* Checks if player won*/
 int winCondition(int win,int size,int board[][size])
 {
     int row,col;
@@ -28,6 +30,7 @@ int winCondition(int win,int size,int board[][size])
     return 0;
 }
 
+/* Checks of the player cannot have further moves */
 int cannotHaveMoves(int size,int board[][size])
 {
     int row,col;
@@ -54,6 +57,7 @@ int cannotHaveMoves(int size,int board[][size])
     }
     return 1;
 }
+/* Checks if the board has atlast one zero */
 int atLeastOneZero(int size,int board[][size])
 {
     int row,col;

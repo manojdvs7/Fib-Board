@@ -6,6 +6,7 @@
 #include "./lib/play.h"
 #include<string.h>
 
+/*gets time and date of play */
 void getDateAndTime(player *p)
 {
     time_t t;
@@ -16,6 +17,7 @@ void getDateAndTime(player *p)
     printf("Date and time:%s",p->date);
 }
 
+/*Selection of board 2X2 or 4X4 */
 void makeMoreChoices(player *p)
 {
     int choice;
@@ -42,6 +44,7 @@ void makeMoreChoices(player *p)
 
 }
 
+/*Choice play new game, saved game or view leaderboard*/
 void makeChoices(player *p)
 {
     int choice;
@@ -65,6 +68,8 @@ void makeChoices(player *p)
             printf("\nInavlid choice");
     }
 }
+
+/*Main Function*/
 int main()
 {
     system("cls");
